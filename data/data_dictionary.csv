@@ -1,0 +1,21 @@
+﻿column,description
+ol_work_id,historical OL target ID; one CSV row per historical source target
+current_ol_work_id,current corrected OL target ID if applicable
+ol_title,"source title, not a canonical conceptual-work title"
+ol_author_name,"source author metadata, not authoritative authorship"
+ol_first_publish_year,OL-reported earliest year; not certified literary publication year
+ol_edition_count,"Open Library registered editions, not copies/readers"
+source_entity_id,project source registry E ID
+project_work_id,project conceptual W ID; blank if unresolved/held
+membership_role,project identity-map membership provenance
+project_work_status,current W status
+suspended_legacy_w,former W ID for suspended overaggregated OL source
+identity_status,ACTIVE_MAPPED / UNRESOLVED_SOURCE / HOLD_OVERAGGREGATED_SOURCE
+wikidata_decision,MATCH / AMBIGUOUS / NO_MATCH
+wikidata_qid,accepted QID only when MATCH
+openalex_candidate_pairs,"provisional operational W x scholarly-document candidate pairs, not citation count"
+openalex_measurement_status,"measurement state, including unavailable/not measured"
+identity_version,project identity release
+wikidata_version,Wikidata crosswalk release
+openalex_version,OpenAlex work-level counts release
+source_commit,input repository revision

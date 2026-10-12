@@ -1,0 +1,30 @@
+# Private / intermediate datasets
+/previews/
+/data_sources/
+
+# Generated workshop datasets (review before tracking)
+/data/outputs/
+/data/*.csv
+!/data/data_dictionary.csv
+/data/*.tsv
+/data/*.parquet
+/data/*.jsonl
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+.DS_Store
