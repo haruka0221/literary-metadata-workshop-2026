@@ -24,8 +24,8 @@ Edition件数はOpen Libraryに登録された書誌レコードの観測値で�
 
 - Open Library Editionの抽出・集計：検証済み
 - Wikidata・OpenAlexとの統合プレビューv4：ローカル生成・検証済み
-- 参加者向けCSV：34,789行・18列の公開候補を検証済み
-- Colabノートブック：ローカル全6コードセルの動作確認済み。Google Colab上では未検証
+- 参加者向けCSV：作品メタデータ、英語Edition集計、刊行年別集計を検証済み
+- Colabノートブック：ローカル全10コードセルの動作確認済み。Google Colab上では未検証
 
 研究用リポジトリのデータや凍結済み成果物は変更していません。
 
@@ -88,19 +88,43 @@ OpenAlexの表示値は、次の状態を区別しています。
 同じProject Workや未解決グループに属する複数のOL Workでは、
 同じOpenAlex候補数が繰り返し表示されます。OL行を合算しないでください。
 
+### `data/workshop_english_editions_v1.csv`
+
+34,789 OL Workごとの英語タグ付きEdition集計です。
+
+- 全年代の英語Edition登録数
+- 1880〜1950年、1951年以降などの登録数
+- 刊行年不明の登録数
+- 最も古い英語Editionの観測刊行年
+
+原語が英語の作品だけを選別した表ではありません。
+
+### `data/work_english_edition_by_year_v1.csv`
+
+Work ID × Edition刊行年の英語Edition登録数です。
+129,464行で、刊行年不明は `UNKNOWN` として保持しています。
+
+このファイルから出版年代グラフを生成します。
+集計対象は2026年2月28日のOpen Library固定ダンプです。
+
+Edition数は印刷部数、売上、読者数を意味しません。
+また、刊行年が2027年以降の記録も存在し得るため、
+Colabの長期比較グラフは2026年までに制限しています。
+
 ### `data/data_dictionary.csv`
 
 上記CSVの18列について、意味と注意点を記載しています。
 
 ### `metadata_workshop.ipynb`
 
-作品名・著者名の部分一致検索、年代別の絞り込み、
-Edition数の可視化、Wikidata判定、OpenAlex候補数と
-品質フラグの確認ができます。
+Open Library全体のライブ検索、Workの選択、Editionの閲覧、
+取得範囲内の言語・刊行年代別グラフを利用できます。
 
-このCSVは歴史的母集団に含まれるOLレコードを対象としています。
-Morris・Bellamy・Butler・Hudsonの4作品を使った詳細なEdition比較は、
-別の教材データとして整備します。
+研究用固定集合に含まれるWorkについては、英語Editionの
+長期的な刊行年代比較とWikidata・OpenAlexの照合情報も確認できます。
+
+ライブAPIと2026年2月28日版の固定ダンプはデータ時点と収録範囲が異なります。
+固定集合は英語原作の小説だけを厳密に選別したものではありません。
 
 ### 避けるべき解釈
 
