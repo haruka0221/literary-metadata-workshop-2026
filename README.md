@@ -13,7 +13,7 @@
 - Wikidata・OpenAlexとの統合プレビューv4：34,789行、49列
 
 元Edition JSONLと統合プレビューは現時点ではローカル管理です。
-GitHub上には主に再現用スクリプト、テスト、仕様書を公開しています。
+GitHub配布用の縮約CSV、再現用スクリプト、テスト、仕様書を管理しています。
 
 Edition件数はOpen Libraryに登録された書誌レコードの観測値であり、
 実際の出版部数や出版履歴の完全な記録ではありません。
@@ -24,8 +24,8 @@ Edition件数はOpen Libraryに登録された書誌レコードの観測値で�
 
 - Open Library Editionの抽出・集計：検証済み
 - Wikidata・OpenAlexとの統合プレビューv4：ローカル生成・検証済み
-- 参加者向けCSV：整備中（GitHubでは未公開）
-- Colabノートブック：配布データとの接続・動作確認は未完了
+- 参加者向けCSV：34,789行・18列の公開候補を検証済み
+- Colabノートブック：ローカル全6コードセルの動作確認済み。Google Colab上では未検証
 
 研究用リポジトリのデータや凍結済み成果物は変更していません。
 
@@ -33,7 +33,8 @@ Edition件数はOpen Libraryに登録された書誌レコードの観測値で�
 
 - Historical Open Library targets: 34,789 source Work records（概念的作品34,789とは異なる）
 - Project conceptual Work: v7、active 32,066、identity suspended 16、superseded 7
-- Wikidata v6: MATCH 8,442 / AMBIGUOUS 358 / NO_MATCH 25,989
+- Wikidata v6（原判定）: MATCH 8,442 / AMBIGUOUS 358 / NO_MATCH 25,989
+- 配布CSVの有効判定: MATCH 8,441 / AMBIGUOUS 358 / NO_MATCH 25,987 / HOLD_TARGET_CORRECTION 3
 - OpenAlex integrated v1: 226,214 operational candidate pairs、7,077 Wに少なくとも1件。数値は確定引用数・固有論文総数ではない。
 - OpenAlex v1にはR3+A2候補との7ペア差のQC保留がある。オリジナルv1は改変しない。
 - Goodreads / UCSD Book Graphは再配布対象外。
@@ -50,23 +51,56 @@ Work別・年代別・言語別集計、歴史的Workへの対応付け、
 中間成果物はGit管理から除外しています。
 集計の再実行には、対応する入力データが別途必要です。
 
-参加者向けCSVの取得・利用手順は、公開準備が整い次第追記します。
+参加者向けCSVは `data/workshop_search_v1.csv` に配置し、Colabから自動読み込みする設計です。
 
 ## 参加者向けColab
 
-ノートブックは以下から開けますが、講習会用データの読み込みを含む動作確認はまだ完了していません。
+ノートブックのコードはローカルで検証済みです。Google Colab上での実行確認は公開後に行います。
 
 `https://colab.research.google.com/github/haruka0221/literary-metadata-workshop-2026/blob/main/metadata_workshop.ipynb`
 
-Googleログイン／ランタイムの接続が必要なことがあります。CSVの読み込み先と実習手順は、配布用データの公開後に検証します。
+Googleログイン／ランタイムの接続が必要なことがあります。CSVはこのリポジトリの `data/workshop_search_v1.csv` から自動取得します。
 
-## 配布予定CSVの設計
+## 参加者向けデータ
 
-`ol_wikidata_openalex_v1.csv`: 一行= historical Open Library analysis target。主な列は `ol_work_id`, `current_ol_work_id`, `ol_title`, `ol_author_name`, `ol_first_publish_year`, `ol_edition_count`, `source_entity_id`, `project_work_id`, `identity_status`, `wikidata_decision`, `wikidata_qid`, `openalex_candidate_pairs`, `openalex_measurement_status`, `identity_version`, `wikidata_version`, `openalex_version`, `source_commit`。
+### `data/workshop_search_v1.csv`
 
-`workshop_sample.csv`: 同じスキーマで、現行の歴史的集合から選んだ講習会向け部分標本。Butler *Erewhon* (1872) など歴史的対象の期間外の作品は、この標本に存在しない可能性があります。別途取得するなら`outside_corpus`と出典を別表で明示してください。
+歴史的Open Library対象34,789レコードを収録した検索用CSV（18列）。
 
-`data_dictionary.csv`: カラムの簡易説明。`qc_report.json`: 実際のファイルを生成できた場合に出力する件数・SHA256・判定数。
+主な情報：
+
+- Open Library：Work ID、タイトル、著者、初刊年の記録、Edition数
+- Wikidata：照合判定、採用されたQID
+- OpenAlex：暫定候補数、計測単位、品質・照合状態フラグ
+
+OpenAlexの表示値は、次の状態を区別しています。
+
+| フラグ | OL行数 | 意味 |
+|---|---:|---|
+| `PROVISIONAL` | 32,689 | Project Workに接続済みの暫定候補ペア数 |
+| `PROVISIONAL_UNRESOLVED` | 1,673 | 作品同定未確定。Calibration A1/A2 v3の候補ID数を参考表示 |
+| `NOT_AVAILABLE` | 410 | 未接続で表示可能な候補数がない |
+| `IDENTITY_HOLD` | 17 | 作品同定に問題があり保留 |
+
+`PROVISIONAL` と `PROVISIONAL_UNRESOLVED` は集計経路が異なるため、
+数値をそのまま比較ランキングに使用しないでください。
+
+同じProject Workや未解決グループに属する複数のOL Workでは、
+同じOpenAlex候補数が繰り返し表示されます。OL行を合算しないでください。
+
+### `data/data_dictionary.csv`
+
+上記CSVの18列について、意味と注意点を記載しています。
+
+### `metadata_workshop.ipynb`
+
+作品名・著者名の部分一致検索、年代別の絞り込み、
+Edition数の可視化、Wikidata判定、OpenAlex候補数と
+品質フラグの確認ができます。
+
+このCSVは歴史的母集団に含まれるOLレコードを対象としています。
+Morris・Bellamy・Butler・Hudsonの4作品を使った詳細なEdition比較は、
+別の教材データとして整備します。
 
 ### 避けるべき解釈
 

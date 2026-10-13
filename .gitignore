@@ -6,6 +6,7 @@
 /data/outputs/
 /data/*.csv
 !/data/data_dictionary.csv
+!/data/workshop_search_v1.csv
 /data/*.tsv
 /data/*.parquet
 /data/*.jsonl
