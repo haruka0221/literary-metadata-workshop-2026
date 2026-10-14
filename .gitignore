@@ -31,3 +31,4 @@ __pycache__/
 .DS_Store
 !/data/workshop_english_editions_v1.csv
 !/data/work_english_edition_by_year_v1.csv
+!/data/work_edition_language_year_v1.csv

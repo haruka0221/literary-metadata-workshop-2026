@@ -53,6 +53,42 @@ Work別・年代別・言語別集計、歴史的Workへの対応付け、
 
 参加者向けCSVは `data/workshop_search_v1.csv` に配置し、Colabから自動読み込みする設計です。
 
+## 新しい実習Notebook（2冊構成）
+
+従来の `metadata_workshop.ipynb` は残し、
+目的別に分割したNotebookを追加しました。
+
+### 01：ブラウザからAPIへ
+
+[`01_publication_history.ipynb`](01_publication_history.ipynb)
+
+Open Libraryのブラウザ画面とAPIを比較し、
+取得したEditionを刊行年代・出版社・言語別に集計します。
+
+2026-02-28固定ダンプに基づく多言語集計があるWorkでは、
+APIで取得できた範囲と固定集計の違いも確認します。
+
+使用データ：
+`data/work_edition_language_year_v1.csv`（187,536行）。
+
+### 02：ダンプから作品集合へ
+
+[`02_work_position.ipynb`](02_work_position.ipynb)
+
+34,789件の固定Work集合を使い、
+選択した作品のEdition登録数を同年代の作品群と比較します。
+
+Wikidataの作品同定結果とOpenAlexの暫定候補情報も扱います。
+OpenAlexの暫定件数を文学的評価の順位とはみなしません。
+
+### 注意
+
+- 2冊は独立して実行できます。
+- APIの一部取得結果を全Editionの分布とみなさないでください。
+- 固定集合は英語原作小説の完全な一覧ではありません。
+- Edition登録数は売上・読者数を意味しません。
+- 実際のGoogle Colab画面での動作確認は公開後に行います。
+
 ## 参加者向けColab
 
 ノートブックのコードはローカルで検証済みです。Google Colab上での実行確認は公開後に行います。
